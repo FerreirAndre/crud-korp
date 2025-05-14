@@ -25,7 +25,15 @@ public class BookRepository(LibraryDatabaseContext context) : IBookRepository
 
     public async Task UpdateAsync(Book entity)
     {
-        context.Update(entity);
+        var existingBook = await context.Books.FindAsync(entity.Id);
+
+        if (existingBook == null)
+            throw new InvalidOperationException($"Book with Id {entity.Id} not found");
+
+        existingBook.Title = entity.Title;
+        existingBook.Author = entity.Author;
+        existingBook.Summary = entity.Summary;
+
         await context.SaveChangesAsync();
     }
 
@@ -37,6 +45,6 @@ public class BookRepository(LibraryDatabaseContext context) : IBookRepository
 
     public async Task<bool> IsBookTitleUnique(string title)
     {
-        return await context.Books.AnyAsync(x => x.Title == title);
+        return await context.Books.AnyAsync(x => x.Title == title) == false;
     }
 }
