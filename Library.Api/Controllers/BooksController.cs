@@ -54,7 +54,7 @@ namespace Library.Api.Controllers
         {
             var command = new UpdateBookCommand
             {
-                Id = id, // Usa o ID da rota
+                Id = id, 
                 Title = book.Title,
                 Author = book.Author,
                 Summary = book.Summary

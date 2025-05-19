@@ -17,16 +17,5 @@ public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
         RuleFor(x => x.Author).NotEmpty()
             .WithMessage("{PropertyName} is required")
             .MinimumLength(1);
-
-        RuleFor(x => x)
-            .MustAsync(BookTitleUnique)
-            .WithMessage("Book name already exists");
-
-        this._bookRepository = bookRepository;
-    }
-
-    private Task<bool> BookTitleUnique(UpdateBookCommand request, CancellationToken cancellationToken)
-    {
-        return _bookRepository.IsBookTitleUnique(request.Title);
     }
 }
